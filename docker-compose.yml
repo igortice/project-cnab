@@ -1,10 +1,10 @@
 services:
-  app:
-    container_name: pc_app
+  web:
+    container_name: pc_web
     build: .
-    command: bin/rails server -b 0.0.0.0
+    command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
     volumes:
-      - .:/app:cached
+      - .:/web:cached
       - bundle_cache:/usr/local/bundle
     ports:
       - "3000:3000"
@@ -21,6 +21,11 @@ services:
       watch:
         - action: rebuild
           path: .
+    stdin_open: true
+    tty: true
+    networks:
+      - pc_network
+
   db:
     container_name: pc_db
     image: postgres:16
@@ -32,6 +37,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - pc_network
 
   selenium:
     container_name: pc_selenium
@@ -41,6 +48,11 @@ services:
       - "4444:4444"
       - "5900:5900"
       - "7900:7900"
+    networks:
+      - pc_network
+
+networks:
+  pc_network:
 
 volumes:
   bundle_cache:

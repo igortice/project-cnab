@@ -16,7 +16,7 @@ Antes de iniciar o projeto, certifique-se de ter instalado em sua máquina:
 
 ### 1️⃣ Clonar o repositório
 ```sh
-git clone https://github.com/igortice/desafio-cnab.git
+git clone https://github.com/igortice/project-cnab.git
 cd desafio-cnab
 ```
 
@@ -29,6 +29,21 @@ docker-compose up -d
 
 ### 🛠 Comandos úteis do Docker Compose:
 
+#### Prepare o banco de dados
+```sh
+docker-compose exec web bin/rails db:prepare
+```
+
+#### Rodar system tests
+```sh
+docker-compose exec web bin/rails test:system
+```
+
+#### Rodar testes
+```sh
+docker-compose exec web rspec
+```
+
 #### Acompanhar logs
 ```sh
 docker-compose logs -f
@@ -36,12 +51,7 @@ docker-compose logs -f
 
 #### Acessar o container da aplicação
 ```sh
-docker-compose exec app bash
-```
-
-#### Rodar testes
-```sh
-docker-compose exec app rspec
+docker-compose exec web bash
 ```
 
 #### Reiniciar os containers
