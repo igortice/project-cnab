@@ -1,0 +1,47 @@
+services:
+  app:
+    container_name: pc_app
+    build: .
+    command: bin/rails server -b 0.0.0.0
+    volumes:
+      - .:/app:cached
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+      DB_HOST: db
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
+      DB_NAME: project_cnab_development
+      SELENIUM_REMOTE_URL: "http://selenium:4444/wd/hub"
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+  db:
+    container_name: pc_db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: project_cnab_development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  selenium:
+    container_name: pc_selenium
+    image: selenium/standalone-chromium:latest
+    shm_size: 2g
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+      - "7900:7900"
+
+volumes:
+  bundle_cache:
+  postgres_data:
