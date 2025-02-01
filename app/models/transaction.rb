@@ -13,10 +13,17 @@ class Transaction < ApplicationRecord
     recebimento_ted:        7,
     recebimento_doc:        8,
     aluguel:                9
-  }, _prefix: true
+  }, _prefix:            true
 
   # Validações dos campos obrigatórios
   validates :transaction_type, :date, :value, :cpf, :card, :hour, presence: true
+
+  scope :incoming, -> { where(transaction_type: [1, 4, 5, 6, 7, 8]) }
+  scope :outgoing, -> { where(transaction_type: [2, 3, 9]) }
+
+  def self.total_balance
+    incoming.sum(:value) - outgoing.sum(:value)
+  end
 
   # Define se a transação é de entrada (+) ou saída (-)
   def incoming?

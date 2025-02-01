@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :uploads, only: [ :new, :create ]
+  resources :transactions, only: [ :index ]
 end

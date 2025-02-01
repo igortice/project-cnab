@@ -4,11 +4,12 @@
     <p class="lead mb-4">
       Este é um sistema de desafio para processamento de arquivos CNAB.
     </p>
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-      <%= link_to "Ir para tela de upload", new_upload_path,
-                  class: "btn btn-outline-secondary btn-lg px-4",
-                  data:  { home_target: "uploadButton" },
-                  style: "display: none;" %>
+    <div class="d-none" data-home-target="uploadButton">
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <%= link_to "Ir para tela de upload", new_upload_path, class: "btn btn-outline-secondary btn-lg px-4" %>
+
+        <%= link_to "Ir para tela de transações", transactions_path, class: "btn btn-primary btn-lg px-4" %>
+      </div>
     </div>
   </div>
 </div>

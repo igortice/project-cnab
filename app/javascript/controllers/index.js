@@ -6,3 +6,6 @@ import { application } from "./application"
 
 import HomeController from "./home_controller"
 application.register("home", HomeController)
+
+import SelectSubmitController from "./select_submit_controller";
+application.register("select-submit", SelectSubmitController);
