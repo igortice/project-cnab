@@ -1,13 +1,20 @@
 #!/bin/bash -e
 
-# Enable jemalloc for reduced memory usage and latency.
-if [ -z "${LD_PRELOAD+x}" ] && [ -f /usr/lib/*/libjemalloc.so.2 ]; then
-  export LD_PRELOAD="$(echo /usr/lib/*/libjemalloc.so.2)"
+# Habilita jemalloc para reduzir consumo de memória e latência
+if [ -z "${LD_PRELOAD+x}" ] && [ -f "$(find /usr/lib -name 'libjemalloc.so.2' | head -n 1)" ]; then
+  export LD_PRELOAD="$(find /usr/lib -name 'libjemalloc.so.2' | head -n 1)"
 fi
 
-# If running the rails server then create or migrate existing database
-if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  ./bin/rails db:prepare
-fi
+# Aguarda o banco de dados estar disponível antes de continuar
+echo "⏳ Aguardando o banco de dados estar pronto..."
+until pg_isready -h db -p 5432 -U "$POSTGRES_USER"; do
+  sleep 1
+done
+echo "✅ Banco de dados pronto!"
 
+# Rodar `db:prepare` sempre antes de iniciar o container
+echo "🔄 Executando migrations e preparando o banco de dados..."
+./bin/rails db:prepare
+
+# Executa o comando original
 exec "${@}"
