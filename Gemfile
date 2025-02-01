@@ -61,3 +61,7 @@ end
 gem "dry-monads"
 gem "dry-validation"
 gem "dry-initializer"
+gem "rswag-api"
+gem "rswag-ui"
+gem "rspec-rails", groups: [ :development, :test ]
+gem "rswag-specs", groups: [ :development, :test ]

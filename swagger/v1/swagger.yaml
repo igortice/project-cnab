@@ -1,0 +1,38 @@
+---
+openapi: 3.0.1
+info:
+  title: API CNAB
+  version: v1
+paths:
+  "/api/transactions":
+    get:
+      summary: Lista todas as transações
+      tags:
+      - Transações
+      responses:
+        '200':
+          description: Transações listadas
+  "/api/transactions/{id}":
+    get:
+      summary: Mostra uma transação específica
+      tags:
+      - Transações
+      parameters:
+      - name: id
+        in: path
+        description: ID da transação
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Transação encontrada
+        '404':
+          description: Transação não encontrada
+servers:
+- url: http://0.0.0.0:3000
+  description: Servidor Local
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
