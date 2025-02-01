@@ -1,0 +1,89 @@
+transaction_one:
+  transaction_type: 1
+  date: <%= Date.today %>
+  value: 10000  # R$ 100,00 (valor em centavos)
+  cpf: "12345678900"
+  card: "1234****5678"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_one
+
+transaction_debito:
+  transaction_type: 1
+  date: <%= Date.today %>
+  value: 15000  # R$ 150,00
+  cpf: "12345678900"
+  card: "1234****5678"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_one
+
+transaction_boleto:
+  transaction_type: 2
+  date: <%= Date.today %>
+  value: 5000  # R$ 50,00
+  cpf: "98765432100"
+  card: "4321****8765"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_two
+
+transaction_financiamento:
+  transaction_type: 3
+  date: <%= Date.today %>
+  value: 30000  # R$ 300,00
+  cpf: "65432198700"
+  card: "1111****2222"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_two
+
+transaction_credito:
+  transaction_type: 4
+  date: <%= Date.today %>
+  value: 20000  # R$ 200,00
+  cpf: "45678912300"
+  card: "9999****0000"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_one
+
+transaction_recebimento_emprestimo:
+  transaction_type: 5
+  date: <%= Date.today %>
+  value: 25000  # R$ 250,00
+  cpf: "78945612300"
+  card: "7777****8888"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_one
+
+transaction_vendas:
+  transaction_type: 6
+  date: <%= Date.today %>
+  value: 17500  # R$ 175,00
+  cpf: "32165498700"
+  card: "5555****6666"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_one
+
+transaction_recebimento_ted:
+  transaction_type: 7
+  date: <%= Date.today %>
+  value: 27500  # R$ 275,00
+  cpf: "74185296300"
+  card: "3333****4444"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_two
+
+transaction_recebimento_doc:
+  transaction_type: 8
+  date: <%= Date.today %>
+  value: 8000  # R$ 80,00
+  cpf: "36925814700"
+  card: "2222****3333"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_two
+
+transaction_aluguel:
+  transaction_type: 9
+  date: <%= Date.today %>
+  value: 30000  # R$ 300,00
+  cpf: "78912345600"
+  card: "5555****1111"
+  hour: <%= Time.current.strftime('%H%M%S') %>
+  store: store_two

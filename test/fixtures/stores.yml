@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+store_one:
+  name: "Loja Exemplo 1"
+  owner: "Dono Exemplo 1"
+
+store_two:
+  name: "Loja Exemplo 2"
+  owner: "Dono Exemplo 2"
