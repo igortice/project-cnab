@@ -4,8 +4,18 @@ class CnabProcessor
   extend Dry::Monads::Result::Mixin
 
   def self.process(file_path)
-    return Failure("🚨 Arquivo não encontrado") unless File.exist?(file_path)
-    return Failure("⚠️ Arquivo vazio") if File.zero?(file_path)
+    return Failure({
+                     message: "🚨 Nenhum arquivo foi enviado."
+                   }) if file_path.blank?
+    return Failure({
+                     message: "🚨 Arquivo não encontrado"
+                   }) unless File.exist?(file_path)
+    return Failure({
+                     message: "⚠️ Arquivo vazio"
+                   }) if File.zero?(file_path)
+    return Failure({
+                     message: "⚠️ Arquivo inválido"
+                   }) unless File.extname(file_path) == ".txt"
 
     errors        = []
     success_count = 0
@@ -27,14 +37,14 @@ class CnabProcessor
 
     if errors.empty?
       Success({
-                message: "✅ Processamento concluído com sucesso!",
+                message:            "✅ Processamento concluído com sucesso!",
                 transactions_saved: success_count
               })
     else
       Failure({
-                message: "⚠️ Processamento concluído com erros.",
+                message:            "⚠️ Processamento concluído com erros.",
                 transactions_saved: success_count,
-                errors: errors.uniq
+                errors:             errors.uniq
               })
     end
   rescue StandardError => e

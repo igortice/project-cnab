@@ -10,7 +10,7 @@ class UploadsController < ApplicationController
       if result.success?
         flash[:notice] = "Arquivo processado com sucesso!"
       else
-        flash[:alert] = "Erro ao processar o arquivo: #{result.failure}"
+        flash[:alert] = "Erro ao processar o arquivo: #{result.failure[:message]}"
       end
     else
       flash[:alert] = "Nenhum arquivo foi enviado."

@@ -18,7 +18,7 @@ class CnabProcessorTest < ActiveSupport::TestCase
     result = CnabProcessor.process("caminho/inexistente.txt")
 
     assert result.failure?, "Deveria falhar ao processar um arquivo inexistente"
-    assert_equal "🚨 Arquivo não encontrado", result.failure
+    assert_equal "🚨 Arquivo não encontrado", result.failure[:message]
   end
 
   test "deve falhar se todas as linhas do CNAB forem inválidas" do
@@ -33,6 +33,6 @@ class CnabProcessorTest < ActiveSupport::TestCase
     result = CnabProcessor.process(@empty_file_path)
 
     assert result.failure?, "O processamento deveria falhar"
-    assert_equal "⚠️ Arquivo vazio", result.failure
+    assert_equal "⚠️ Arquivo vazio", result.failure[:message]
   end
 end
