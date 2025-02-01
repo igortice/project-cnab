@@ -5,9 +5,10 @@
       Este é um sistema de desafio para processamento de arquivos CNAB.
     </p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-      <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-home-target="uploadButton" style="display: none;">
-        Ir para tela de upload
-      </button>
+      <%= link_to "Ir para tela de upload", new_upload_path,
+                  class: "btn btn-outline-secondary btn-lg px-4",
+                  data:  { home_target: "uploadButton" },
+                  style: "display: none;" %>
     </div>
   </div>
 </div>

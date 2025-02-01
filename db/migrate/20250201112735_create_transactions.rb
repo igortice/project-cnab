@@ -13,7 +13,7 @@ class CreateTransactions < ActiveRecord::Migration[7.2]
       t.timestamps
     end
     add_index :transactions,
-              [:transaction_type, :date, :hour, :value, :cpf, :card, :store_id],
+              [ :transaction_type, :date, :hour, :value, :cpf, :card, :store_id ],
               unique: true,
               name:   "unique_transaction_index"
   end

@@ -1,0 +1,16 @@
+<h1>Upload de Arquivo CNAB</h1>
+
+<%= form_with url: uploads_path, multipart: true, local: true do |form| %>
+  <div>
+    <%= form.label :file, "Selecione o arquivo CNAB:" %>
+    <%= form.file_field :file, required: true %>
+  </div>
+
+  <%= form.submit "Enviar Arquivo" %>
+<% end %>
+
+<% if flash[:notice] %>
+  <p style="color: green;"><%= flash[:notice] %></p>
+<% elsif flash[:alert] %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
