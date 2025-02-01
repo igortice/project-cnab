@@ -27,7 +27,10 @@
 
     <div class="text-center <%= @total_balance.negative? ? 'text-danger' : 'text-success' %>">
       <h6>Saldo Final:</h6>
-      <h3><%= number_to_currency(@transactions.incoming.sum(:value) - @transactions.outgoing.sum(:value), unit: "R$ ") %></h3>
+      <h3>
+        <%= @total_balance.negative? ? "🔻" : "🔺" %>
+        <%= number_to_currency(@total_balance, unit: "R$ ") %>
+      </h3>
     </div>
   </div>
 
@@ -46,7 +49,7 @@
         <tr>
           <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
           <td><%= transaction.store.name %></td>
-          <td><%= transaction.transaction_type %></td>
+          <td><%= human_transaction_type(transaction) %></td>
           <td class="<%= transaction.outgoing? ? 'text-danger' : 'text-success' %>">
             <%= transaction.outgoing? ? "-" : "+" %>
             <%= number_to_currency(transaction.value, unit: "R$ ") %>
