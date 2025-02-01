@@ -18,8 +18,8 @@ class Transaction < ApplicationRecord
   # Validações dos campos obrigatórios
   validates :transaction_type, :date, :value, :cpf, :card, :hour, presence: true
 
-  scope :incoming, -> { where(transaction_type: [1, 4, 5, 6, 7, 8]) }
-  scope :outgoing, -> { where(transaction_type: [2, 3, 9]) }
+  scope :incoming, -> { where(transaction_type: [ 1, 4, 5, 6, 7, 8 ]) }
+  scope :outgoing, -> { where(transaction_type: [ 2, 3, 9 ]) }
 
   def self.total_balance
     incoming.sum(:value) - outgoing.sum(:value)

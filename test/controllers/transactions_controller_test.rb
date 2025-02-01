@@ -2,8 +2,8 @@ require "test_helper"
 
 class TransactionsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @store       = stores(:one)
-    @transaction = transactions(:one)
+    @store       = stores(:store_one)
+    @transaction = transactions(:transaction_one)
   end
 
   test "deve acessar a página de transações" do
@@ -17,10 +17,10 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "td", text: @store.name
   end
-
+  #
   test "deve exibir saldo total corretamente" do
     get transactions_url, params: { store_id: @store.id }
     assert_response :success
-    assert_match /Saldo Total:/, response.body
+    assert_match /Saldo Final:/, response.body
   end
 end

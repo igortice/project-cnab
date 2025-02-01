@@ -1,62 +1,101 @@
+<h1>Transações</h1>
+
 <div class="container">
-  <h1 class="text-center">Transações</h1>
-
-  <div class="row justify-content-center" data-controller="select-submit">
-    <div class="col-md-6">
-      <%= form_with url: transactions_path, method: :get, local: true, class: "mb-3", data: { select_submit_target: "form" } do |form| %>
-        <div class="input-group">
-          <%= form.collection_select :store_id, @stores, :id, :name,
-                                     { include_blank: "Todas as Lojas", selected: params[:store_id] },
-                                     { class: "form-select", data: { action: "change->select-submit#submit" } } %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-between mt-4">
-    <div class="text-success text-center">
-      <h6>Total de Entradas:</h6>
-      <h3><%= number_to_currency(@transactions.incoming.sum(:value), unit: "R$ ") %></h3>
-    </div>
-
-
-    <div class="text-danger text-center">
-      <h6>Total de Saídas:</h6>
-      <h3><%= number_to_currency(@transactions.outgoing.sum(:value), unit: "R$ ") %></h3>
-    </div>
-
-    <div class="text-center <%= @total_balance.negative? ? 'text-danger' : 'text-success' %>">
-      <h6>Saldo Final:</h6>
-      <h3>
-        <%= @total_balance.negative? ? "🔻" : "🔺" %>
-        <%= number_to_currency(@total_balance, unit: "R$ ") %>
+  <div class="accordion" id="accordion1">
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#target-1" aria-expanded="true" aria-controls="target-1">
+          Financeiro
+        </button>
       </h3>
+      <div id="target-1" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+          <section>
+            <div class="container text-center">
+              <div style="width: 300px; height: 300px; margin: 0 auto;">
+                <canvas
+                  data-controller="chart"
+                  data-chart-target="chart"
+                  data-entradas="<%= @transactions.incoming.sum(:value) %>"
+                  data-saidas="<%= @transactions.outgoing.sum(:value) %>"
+                  data-saldo="<%= @total_balance %>"
+                ></canvas>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+              <div class="text-success text-center">
+                <h6>Total de Entradas:</h6>
+                <h5><%= number_to_currency(@transactions.incoming.sum(:value), unit: "R$ ") %></h5>
+              </div>
+
+
+              <div class="text-danger text-center">
+                <h6>Total de Saídas:</h6>
+                <h5><%= number_to_currency(@transactions.outgoing.sum(:value), unit: "R$ ") %></h5>
+              </div>
+
+              <div class="text-center text-primary">
+                <h6>Saldo Final:</h6>
+                <h5>
+                  <%= @total_balance.negative? ? "🔻" : "🔺" %>
+                  <%= number_to_currency(@total_balance, unit: "R$ ") %>
+                </h5>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#target-2" aria-expanded="true" aria-controls="target-2">
+          Dados
+        </button>
+      </h2>
+      <div id="target-2" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+          <section>
+            <div class="row justify-content-center" data-controller="select-submit">
+              <div class="col-md-6">
+                <%= form_with url: transactions_path, method: :get, local: true, class: "mb-3", data: { select_submit_target: "form" } do |form| %>
+                  <div class="input-group">
+                    <%= form.collection_select :store_id, @stores, :id, :name,
+                                               { include_blank: "Todas as Lojas", selected: params[:store_id] },
+                                               { class: "form-select", data: { action: "change->select-submit#submit" } } %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <table class="table table-striped mt-4">
+              <thead class="table-dark">
+                <tr>
+                  <th>Data</th>
+                  <th>Loja</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                  <th>CPF</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @transactions.each do |transaction| %>
+                  <tr>
+                    <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
+                    <td><%= transaction.store.name %></td>
+                    <td><%= human_transaction_type(transaction) %></td>
+                    <td class="<%= transaction.outgoing? ? 'text-danger' : 'text-success' %>">
+                      <%= transaction.outgoing? ? "-" : "+" %>
+                      <%= number_to_currency(transaction.value, unit: "R$ ") %>
+                    </td>
+                    <td><%= transaction.cpf %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
     </div>
   </div>
-
-  <table class="table table-striped mt-4">
-    <thead class="table-dark">
-      <tr>
-        <th>Data</th>
-        <th>Loja</th>
-        <th>Tipo</th>
-        <th>Valor</th>
-        <th>CPF</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @transactions.each do |transaction| %>
-        <tr>
-          <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
-          <td><%= transaction.store.name %></td>
-          <td><%= human_transaction_type(transaction) %></td>
-          <td class="<%= transaction.outgoing? ? 'text-danger' : 'text-success' %>">
-            <%= transaction.outgoing? ? "-" : "+" %>
-            <%= number_to_currency(transaction.value, unit: "R$ ") %>
-          </td>
-          <td><%= transaction.cpf %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 </div>
