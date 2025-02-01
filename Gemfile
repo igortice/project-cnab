@@ -57,3 +57,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "dry-monads"
+gem "dry-validation"
+gem "dry-initializer"

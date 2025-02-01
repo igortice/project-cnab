@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_01_112735) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["store_id"], name: "index_transactions_on_store_id"
+    t.index ["transaction_type", "date", "hour", "value", "cpf", "card", "store_id"], name: "unique_transaction_index", unique: true
   end
 
   add_foreign_key "transactions", "stores"
