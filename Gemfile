@@ -73,6 +73,10 @@ gem "rspec-rails", groups: [ :development, :test ]
 
 # Gem para criação de dados de teste
 gem "factory_bot_rails", group: [ :development, :test ]
+gem "faker", group: [ :development, :test ]
 
 # Gem para paginação
 gem "pagy"
+
+# Gem para serialização de dados
+gem "jsonapi-serializer"

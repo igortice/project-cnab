@@ -1,59 +1,43 @@
 require "swagger_helper"
+require_relative "schemas/transactions_schema"
+require_relative "schemas/transaction_schema"
+require_relative "schemas/store_schema"
 
 RSpec.describe "Transações API", type: :request do
   path "/api/transactions" do
     get "Lista todas as transações com paginação e filtro por loja" do
       tags "Transações"
-      produces "application/json"
+      produces "application/vnd.api+json"
       parameter name: :page, in: :query, type: :integer, description: "Número da página (default: 1)"
       parameter name: :store_id, in: :query, type: :integer, description: "Filtrar por loja específica"
 
       response "200", "Transações listadas" do
-        schema type:       :object,
-               properties: {
-                 transactions: {
-                   type:  :array,
-                   items: {
-                     type:       :object,
-                     properties: {
-                       id:    { type: :integer },
-                       date:  { type: :string, format: :date },
-                       value: { type: :integer },
-                       cpf:   { type: :string },
-                       card:  { type: :string },
-                       hour:  { type: :string },
-                       store: {
-                         type:       :object,
-                         properties: {
-                           name:  { type: :string },
-                           owner: { type: :string }
-                         }
-                       }
-                     }
-                   }
-                 },
-                 pagination:   {
-                   type:       :object,
-                   properties: {
-                     total_count:  { type: :integer },
-                     current_page: { type: :integer },
-                     total_pages:  { type: :integer },
-                     next_page:    { type: [ :integer, "null" ] },
-                     prev_page:    { type: [ :integer, "null" ] }
-                   }
-                 }
-               }
+        schema TransactionsSchema.schema
 
-        let!(:store) { Store.create(name: "Loja Teste", owner: "João") }
-        let!(:transactions) do
-          create_list(:transaction, 15, store: store, transaction_type: "credito", value: 1000, cpf: "12345678900", card: "1234****5678", hour: "120000")
-        end
+        let!(:store) { create(:store) }
+        let!(:transactions) { create_list(:transaction, 15, store: store) }
 
         let(:page) { 1 }
-        let(:per_page) { 5 }
         let(:store_id) { store.id }
 
-        run_test!
+        run_test! do |response|
+          json = JSON.parse(response.body)
+
+          # ✅ Verifica se a resposta contém um array de transações
+          expect(json["data"]).to be_an(Array)
+
+          # ✅ Verifica se cada transação tem os atributos esperados
+          json["data"].each do |transaction|
+            expect(transaction).to have_key("id")
+            expect(transaction).to have_key("type")
+            expect(transaction["attributes"]).to have_key("date")
+            expect(transaction["attributes"]).to have_key("value")
+          end
+
+          # ✅ Testa a paginação
+          expect(json["pagination"]["count"]).to eq(15)
+          expect(json["pagination"]["page"]).to eq(page)
+        end
       end
     end
   end
@@ -61,17 +45,35 @@ RSpec.describe "Transações API", type: :request do
   path "/api/transactions/{id}" do
     get "Mostra uma transação específica" do
       tags "Transações"
-      produces "application/json"
+      produces "application/vnd.api+json"
       parameter name: :id, in: :path, type: :integer, description: "ID da transação"
 
       response "200", "Transação encontrada" do
-        let(:id) { Transaction.create(transaction_type: "debito", date: "2024-02-01", value: 1000, cpf: "12345678900", card: "1234****5678", hour: "120000", store: Store.create(name: "Loja Teste", owner: "João")).id }
-        run_test!
+        schema TransactionSchema.schema
+
+        let(:id) { create(:transaction, transaction_type: "debito", store: create(:store)).id }
+
+        run_test! do |response|
+          json = JSON.parse(response.body)
+
+          # ✅ Verifica se a resposta tem os dados corretos
+          expect(json["data"]).to have_key("id")
+          expect(json["data"]["attributes"]).to have_key("date")
+          expect(json["data"]["attributes"]).to have_key("value")
+          expect(json["data"]["attributes"]["transaction_type"]).to eq("debito")
+        end
       end
 
       response "404", "Transação não encontrada" do
         let(:id) { 0 }
-        run_test!
+
+        run_test! do |response|
+          json = JSON.parse(response.body)
+
+          # ✅ Verifica se a resposta retorna um erro apropriado
+          expect(response.status).to eq(404)
+          expect(json["error"]).to eq("Transação não encontrada")
+        end
       end
     end
   end

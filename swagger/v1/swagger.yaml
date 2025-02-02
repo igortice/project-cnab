@@ -24,29 +24,60 @@ paths:
         '200':
           description: Transações listadas
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 type: object
                 properties:
-                  transactions:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
                         id:
-                          type: integer
-                        date:
                           type: string
-                          format: date
-                        value:
-                          type: integer
-                        cpf:
+                        type:
                           type: string
-                        card:
+                        attributes:
+                          type: object
+                          properties:
+                            date:
+                              type: string
+                              format: date
+                            transaction_type:
+                              type: string
+                            value:
+                              type: integer
+                            formatted_value:
+                              type: string
+                            cpf:
+                              type: string
+                            card:
+                              type: string
+                            hour:
+                              type: string
+                        relationships:
+                          type: object
+                          properties:
+                            store:
+                              type: object
+                              properties:
+                                data:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                  included:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
                           type: string
-                        hour:
+                        type:
                           type: string
-                        store:
+                        attributes:
                           type: object
                           properties:
                             name:
@@ -56,20 +87,20 @@ paths:
                   pagination:
                     type: object
                     properties:
-                      total_count:
+                      count:
                         type: integer
-                      current_page:
+                      page:
                         type: integer
-                      total_pages:
+                      pages:
                         type: integer
-                      next_page:
-                        type:
+                      next:
+                        types:
                         - integer
-                        - 'null'
-                      prev_page:
-                        type:
+                        -
+                      prev:
+                        types:
                         - integer
-                        - 'null'
+                        -
   "/api/transactions/{id}":
     get:
       summary: Mostra uma transação específica
@@ -85,6 +116,65 @@ paths:
       responses:
         '200':
           description: Transação encontrada
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      attributes:
+                        type: object
+                        properties:
+                          date:
+                            type: string
+                            format: date
+                          transaction_type:
+                            type: string
+                          value:
+                            type: integer
+                          formatted_value:
+                            type: string
+                          cpf:
+                            type: string
+                          card:
+                            type: string
+                          hour:
+                            type: string
+                      relationships:
+                        type: object
+                        properties:
+                          store:
+                            type: object
+                            properties:
+                              data:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                  included:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        attributes:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            owner:
+                              type: string
         '404':
           description: Transação não encontrada
 servers:
