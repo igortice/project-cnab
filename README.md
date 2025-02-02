@@ -55,16 +55,19 @@ Este projeto foi desenvolvido para processar e visualizar transações financeir
   - Interface web para envio de arquivos `.txt`
   - Validação e extração de dados
   - Armazenamento das transações no banco de dados PostgreSQL
+  - 📌 **URL de Upload:** [Upload de Arquivo](http://0.0.0.0:3000/uploads/new)
 
 - **📊 Exibição e Filtros das Transações**
   - Listagem de transações por loja
   - Filtros por período e tipo de operação
   - Totalização de entradas, saídas e saldo
+  - 📌 **URL de Transações:** [Visualizar Transações](http://0.0.0.0:3000/transactions)
 
 - **🔗 API para Integração**
   - Endpoints REST para acesso às transações
   - Paginação e filtros via query params
   - Documentação automatizada com **Swagger (RSwag)**
+  - 📌 **URL da API:** [Swagger API Docs](http://0.0.0.0:3000/api-docs/index.html)
 
 - **🛠 Testes Automatizados**
   - **RSpec** para testes de unidade e integração
@@ -75,6 +78,8 @@ Este projeto foi desenvolvido para processar e visualizar transações financeir
   - Containers para Rails, PostgreSQL e Selenium
   - Configuração via **Docker Compose**
   - Execução dos testes dentro do ambiente Docker
+
+🔗 **Acesse a Home do Projeto:** [Home](http://0.0.0.0:3000/)
 
 ---
 
@@ -127,8 +132,6 @@ Os models são responsáveis pela definição da estrutura dos dados e suas rela
 
 - **`transaction.rb`** → Define a entidade de transação e suas validações.
 - **`store.rb`** → Representa as lojas e suas transações associadas.
-
-Dentro da pasta `concerns/`, são armazenadas funcionalidades reutilizáveis, como métodos compartilhados entre models.
 
 ---
 
