@@ -58,12 +58,21 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# Gems da biblioteca Dry para programação funcional
 gem "dry-monads"
 gem "dry-validation"
 gem "dry-initializer"
+
+# Gems para documentação e testes de API com Swagger
 gem "rswag-api"
 gem "rswag-ui"
-gem "rspec-rails", groups: [ :development, :test ]
 gem "rswag-specs", groups: [ :development, :test ]
+
+# Gem para testes com RSpec
+gem "rspec-rails", groups: [ :development, :test ]
+
+# Gem para criação de dados de teste
 gem "factory_bot_rails", group: [ :development, :test ]
+
+# Gem para paginação
 gem "pagy"

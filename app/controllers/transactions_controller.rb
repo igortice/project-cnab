@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
-  before_action :get_stores, :get_transactions,
+  before_action :get_stores,
+                :get_transactions,
                 only: %i[index]
 
   def index
@@ -18,7 +19,11 @@ class TransactionsController < ApplicationController
   end
 
   def get_transactions
-    @transactions        = Transaction.includes(:store).order(date: :desc)
-    @transactions        = @transactions.where(store_id: params[:store_id]) if params[:store_id].present?
+    @transactions = Transaction.includes(:store).order(date: :desc)
+    @transactions = @transactions.where(store_id: transaction_params[:store_id]) if transaction_params[:store_id].present?
+  end
+
+  def transaction_params
+    params.permit(:store_id, :date, :value, :cpf, :card, :hour)
   end
 end

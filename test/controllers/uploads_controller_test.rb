@@ -16,7 +16,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
   test "deve processar um arquivo CNAB válido" do
     post uploads_path, params: { file: @valid_file }
 
-    assert_redirected_to new_upload_path
+    assert_redirected_to transactions_path
     follow_redirect!
     assert_match "Arquivo processado com sucesso!", response.body
   end

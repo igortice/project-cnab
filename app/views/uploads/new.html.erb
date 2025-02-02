@@ -6,16 +6,6 @@
           <h3 class="mb-0">Upload de Arquivo CNAB txt</h3>
         </div>
         <div class="card-body">
-          <% if flash[:notice] %>
-            <div class="alert alert-success mt-3" role="alert">
-              <%= flash[:notice] %>
-            </div>
-          <% elsif flash[:alert] %>
-            <div class="alert alert-danger mt-3" role="alert">
-              <%= flash[:alert] %>
-            </div>
-          <% end %>
-
           <%= form_with url: uploads_path, multipart: true, local: true, class: "needs-validation" do |form| %>
             <div class="mb-3">
               <%= form.label :file, "Selecione o arquivo CNAB:", class: "form-label" %>

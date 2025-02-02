@@ -18,6 +18,7 @@ class Transaction < ApplicationRecord
   # Validações dos campos obrigatórios
   validates :transaction_type, :date, :value, :cpf, :card, :hour, presence: true
 
+  # Scope para filtrar as transações de entrada e saída
   scope :incoming, -> { where(transaction_type: [ 1, 4, 5, 6, 7, 8 ]) }
   scope :outgoing, -> { where(transaction_type: [ 2, 3, 9 ]) }
 
