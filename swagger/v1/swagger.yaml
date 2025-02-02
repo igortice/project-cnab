@@ -192,10 +192,13 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
-              format: binary
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Arquivo CNAB para ser processado
         required: true
-        description: Arquivo CNAB para ser processado
 servers:
 - url: http://0.0.0.0:3000
   description: Servidor Local
