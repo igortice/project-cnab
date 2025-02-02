@@ -177,6 +177,25 @@ paths:
                               type: string
         '404':
           description: Transação não encontrada
+  "/api/uploads":
+    post:
+      summary: Faz upload e processa um arquivo CNAB
+      tags:
+      - Uploads
+      parameters: []
+      responses:
+        '200':
+          description: Arquivo processado com sucesso
+        '422':
+          description: Erro no processamento do arquivo
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+        required: true
+        description: Arquivo CNAB para ser processado
 servers:
 - url: http://0.0.0.0:3000
   description: Servidor Local

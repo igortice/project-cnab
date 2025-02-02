@@ -14,10 +14,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
+  # Defines upload routes
   resources :uploads, only: [ :new, :create ]
+
+  # Defines transaction routes
   resources :transactions, only: [ :index ]
 
+  # Defines the API routes
   namespace :api do
+    resources :uploads, only: [ :create ]
+
     resources :transactions, only: [ :index, :show ]
   end
 end
