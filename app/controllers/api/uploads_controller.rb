@@ -3,16 +3,13 @@ class Api::UploadsController < ApplicationController
 
   def create
     file = upload_params[:file]
-    if file.present?
-      result = CnabProcessor.process(file.tempfile.path)
+    return render json: { error: "Arquivo não enviado" }, status: :unprocessable_entity if file.blank?
 
-      if result.success?
-        render json: { message: "Arquivo processado com sucesso", processed: result.value! }, status: :ok
-      else
-        render json: { error: result.failure }, status: :unprocessable_entity
-      end
+    result = CnabProcessor.process(file.tempfile.path)
+    if result.success?
+      render json: { message: "Arquivo processado com sucesso", processed: result.value! }, status: :ok
     else
-      render json: { error: "Arquivo não enviado" }, status: :unprocessable_entity
+      render json: { error: result.failure }, status: :unprocessable_entity
     end
   end
 

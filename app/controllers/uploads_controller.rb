@@ -4,6 +4,7 @@ class UploadsController < ApplicationController
 
   def create
     file = upload_params[:file]
+
     if file.present?
       result = CnabProcessor.process(file.path)
 
