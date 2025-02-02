@@ -16,8 +16,8 @@
                 <canvas
                   data-controller="chart"
                   data-chart-target="chart"
-                  data-entradas="<%= @transactions.incoming.sum(:value) %>"
-                  data-saidas="<%= @transactions.outgoing.sum(:value) %>"
+                  data-entradas="<%= @total_incoming %>"
+                  data-saidas="<%= @total_outgoing %>"
                   data-saldo="<%= @total_balance %>"
                 ></canvas>
               </div>
@@ -25,13 +25,13 @@
             <div class="d-flex justify-content-between mt-4">
               <div class="text-success text-center">
                 <h6>Total de Entradas:</h6>
-                <h5><%= number_to_currency(@transactions.incoming.sum(:value), unit: "R$ ") %></h5>
+                <h5><%= number_to_currency(@total_incoming, unit: "R$ ") %></h5>
               </div>
 
 
               <div class="text-danger text-center">
                 <h6>Total de Saídas:</h6>
-                <h5><%= number_to_currency(@transactions.outgoing.sum(:value), unit: "R$ ") %></h5>
+                <h5><%= number_to_currency(@total_outgoing, unit: "R$ ") %></h5>
               </div>
 
               <div class="text-center text-primary">
@@ -59,7 +59,11 @@
           <section>
             <div class="row justify-content-between">
               <div class="col-3">
-                <%== pagy_bootstrap_combo_nav_js(@pagy) if @pagy.pages > 1 %>
+                <% if @pagy.pages > 1 %>
+                  <div class="pagination-container">
+                    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+                  </div>
+                <% end %>
               </div>
 
               <div class="col-9" data-controller="select-submit">
@@ -76,6 +80,7 @@
               <thead class="table-dark">
                 <tr>
                   <th>Data</th>
+                  <th>Hora</th>
                   <th>Loja</th>
                   <th>Tipo</th>
                   <th>Valor</th>
@@ -86,6 +91,7 @@
                 <% @transactions.each do |transaction| %>
                   <tr>
                     <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
+                    <td><%= transaction.hour %></td>
                     <td><%= transaction.store.name %></td>
                     <td><%= human_transaction_type(transaction) %></td>
                     <td class="<%= transaction.outgoing? ? 'text-danger' : 'text-success' %>">
