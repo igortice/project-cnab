@@ -3,11 +3,17 @@ class Api::TransactionsController < ApplicationController
 
   # GET /api/transactions
   def index
-    transactions = Transaction.includes(:store)
-
+    transactions = Transaction.includes(:store).order(date: :desc)
+    pagy, transactions = pagy(transactions)
     transactions = transactions.where(store_id: params[:store_id]) if params[:store_id].present?
 
-    render json: transactions, only: [ :id, :date, :value, :cpf, :card, :hour ], include: { store: { only: [ :name, :owner ] } }
+    render json: {
+      transactions: transactions.as_json(
+        only:    [ :id, :date, :transaction_type, :value, :cpf, :card, :hour ],
+        include: { store: { only: [ :name, :owner ] } }
+      ),
+      pagination:   pagy_metadata(pagy)
+    }
   end
 
   # GET /api/transactions/:id

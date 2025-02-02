@@ -65,3 +65,5 @@ gem "rswag-api"
 gem "rswag-ui"
 gem "rspec-rails", groups: [ :development, :test ]
 gem "rswag-specs", groups: [ :development, :test ]
+gem "factory_bot_rails", group: [ :development, :test ]
+gem "pagy"

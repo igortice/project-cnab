@@ -57,8 +57,12 @@
       <div id="target-2" class="accordion-collapse collapse show">
         <div class="accordion-body">
           <section>
-            <div class="row justify-content-center" data-controller="select-submit">
-              <div class="col-md-6">
+            <div class="row justify-content-between">
+              <div class="col-3">
+                <%== pagy_bootstrap_combo_nav_js(@pagy) if @pagy.pages > 1 %>
+              </div>
+
+              <div class="col-9" data-controller="select-submit">
                 <%= form_with url: transactions_path, method: :get, local: true, class: "mb-3", data: { select_submit_target: "form" } do |form| %>
                   <div class="input-group">
                     <%= form.collection_select :store_id, @stores, :id, :name,

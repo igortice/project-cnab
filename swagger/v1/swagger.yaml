@@ -6,12 +6,70 @@ info:
 paths:
   "/api/transactions":
     get:
-      summary: Lista todas as transações
+      summary: Lista todas as transações com paginação e filtro por loja
       tags:
       - Transações
+      parameters:
+      - name: page
+        in: query
+        description: 'Número da página (default: 1)'
+        schema:
+          type: integer
+      - name: store_id
+        in: query
+        description: Filtrar por loja específica
+        schema:
+          type: integer
       responses:
         '200':
           description: Transações listadas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        date:
+                          type: string
+                          format: date
+                        value:
+                          type: integer
+                        cpf:
+                          type: string
+                        card:
+                          type: string
+                        hour:
+                          type: string
+                        store:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            owner:
+                              type: string
+                  pagination:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      current_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      next_page:
+                        type:
+                        - integer
+                        - 'null'
+                      prev_page:
+                        type:
+                        - integer
+                        - 'null'
   "/api/transactions/{id}":
     get:
       summary: Mostra uma transação específica
